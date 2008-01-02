@@ -79,8 +79,6 @@ public class GraphicalUI {
 				x = (int) Math.floor(Math.random() * 3);
 				y = (int) Math.floor(Math.random() * 3);
 
-				System.out.println(x + "," + y);
-				
 				dx1 = 1;
 				dy1 = 1;
 				dx2 = 25;
@@ -90,8 +88,6 @@ public class GraphicalUI {
 				sx2 = (x + 1) * 24;
 				sy2 = (y + 1) * 24;
 
-				System.out.println(numerals.getWidth() +"."+numerals.getHeight());
-				
 				g.drawImage(numerals, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2,
 						null);
 			} else {
@@ -118,7 +114,7 @@ public class GraphicalUI {
 
 	public static void main(String[] args) {
 
-		JFrame frame = new JFrame("Sudoku Solver");
+		JFrame frame = new JFrame("  Sudoku Solver");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JPanel board = new Board();

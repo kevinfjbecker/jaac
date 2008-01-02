@@ -19,6 +19,7 @@ public class SudokuSolver {
 		SudokuSolver sudokuSolver = new SudokuSolver();
 
 		sudokuSolver.loadValues(Sudoku.fiendishExample);
+
 		System.out.println(sudokuSolver.showBoard());
 
 		long t = System.currentTimeMillis();
@@ -90,27 +91,38 @@ public class SudokuSolver {
 			SecurityException, ClassNotFoundException, IllegalAccessException,
 			InvocationTargetException, NoSuchMethodException {
 
-		for (int y = 0; y < DIMENSION; y++)
-			for (int x = 0; x < DIMENSION; x++)
+		int minX = -1, minY = -1, x, y, n = Integer.MAX_VALUE;
+
+		for (y = 0; y < DIMENSION; y++)
+			for (x = 0; x < DIMENSION; x++)
 				if (_board.get(y, x) == 0)
-					for (int value = 1; value <= DIMENSION; value++)
-						if (_pencilmarks.isPossible(y, x, value)) {
+					if (_pencilmarks.getNumberOfPossibilities(y, x) < n) {
+						minX = x;
+						minY = y;
+						n = _pencilmarks.getNumberOfPossibilities(y, x);
+					}
 
-							_actionHistory.openTransaction();
-							Aggregator.setValue(_pencilmarks, y, x, value);
-							applyLogic();
-							_actionHistory.closeTransaction();
+		if (minX == -1)
+			return;
 
-							if (!_board.isValid() || hasBlanksInPencilmarks()) {
-								_actionHistory.undo();
-							} else {
-								applyAriadnesThread();
-							}
+		for (int value = 1; value <= DIMENSION; value++)
+			if (_pencilmarks.isPossible(minY, minX, value)) {
 
-							if (_board.isSolved())
-								return;
-							_actionHistory.undo();
-						}
+				_actionHistory.openTransaction();
+				Aggregator.setValue(_pencilmarks, minY, minX, value);
+				applyLogic();
+				_actionHistory.closeTransaction();
+
+				if (!_board.isValid() || hasBlanksInPencilmarks()) {
+					_actionHistory.undo();
+				} else {
+					applyAriadnesThread();
+				}
+
+				if (_board.isSolved())
+					return;
+				_actionHistory.undo();
+			}
 	}
 
 	private void applyLogic() {
