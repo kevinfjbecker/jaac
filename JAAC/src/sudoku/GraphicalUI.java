@@ -1,13 +1,23 @@
 package sudoku;
 
+import static java.awt.Color.BLACK;
+import static java.awt.Color.DARK_GRAY;
+import static java.awt.Color.LIGHT_GRAY;
+import static java.awt.Color.WHITE;
+import static java.awt.image.BufferedImage.TYPE_INT_RGB;
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
+
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.RenderingHints;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
-import java.io.File;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -18,7 +28,7 @@ public class GraphicalUI {
 	private static class Board extends JPanel {
 
 		Board() {
-			setBorder(BorderFactory.createLineBorder(Color.BLACK));
+			setBorder(BorderFactory.createLineBorder(BLACK));
 			setLayout(new GridLayout(3, 3));
 			for (int i = 0; i < 9; i++)
 				add(new Box());
@@ -28,7 +38,7 @@ public class GraphicalUI {
 	@SuppressWarnings("serial")
 	private static class Box extends JPanel {
 		Box() {
-			setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+			setBorder(BorderFactory.createLineBorder(DARK_GRAY));
 			setLayout(new GridLayout(3, 3));
 			for (int k = 0; k < 9; k++)
 				add(new Square());
@@ -38,29 +48,69 @@ public class GraphicalUI {
 	@SuppressWarnings("serial")
 	private static class Square extends JPanel {
 
-		static BufferedImage marks;
+		static BufferedImage marks[];
 
-		static BufferedImage numerals;
+		static BufferedImage[] numerals;
 
 		static {
-			try {
-				marks = ImageIO.read(new File("data/pencil-marks.jpg").toURI()
-						.toURL());
-			} catch (Exception e) {
+
+			numerals = new BufferedImage[9];
+			for (int i = 0; i < 9; i++) {
+
+				numerals[i] = new BufferedImage(24, 24, TYPE_INT_RGB);
+				Graphics2D g2d = (Graphics2D) numerals[i].getGraphics();
+
+				g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+				Color resetColor = g2d.getColor();
+				g2d.setColor(WHITE);
+				g2d.fillRect(0, 0, 24, 24);
+
+				g2d.setColor(BLACK);
+				FontRenderContext frc = g2d.getFontRenderContext();
+				Font f = new Font(Font.SERIF, Font.PLAIN, 24);
+				String s = new String("" + (i + 1));
+				TextLayout textLayout = new TextLayout(s, f, frc);
+				textLayout.draw(g2d, 6, 20);
+
+				g2d.setColor(resetColor);
+				g2d.dispose();
 			}
+
 		}
 
 		static {
-			try {
-				numerals = ImageIO.read(new File("data/numerals.jpg").toURI()
-						.toURL());
-			} catch (Exception e) {
+
+			marks = new BufferedImage[9];
+			for (int i = 0; i < 9; i++) {
+
+				marks[i] = new BufferedImage(8, 8, TYPE_INT_RGB);
+				Graphics2D g2d = (Graphics2D) marks[i].getGraphics();
+
+				g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+				Color resetColor = g2d.getColor();
+				g2d.setColor(WHITE);
+				g2d.fillRect(0, 0, 24, 24);
+
+				g2d.setColor(BLACK);
+				FontRenderContext frc = g2d.getFontRenderContext();
+				Font f = new Font(Font.SERIF, Font.PLAIN, 6);
+				String s = new String("" + (i + 1));
+				TextLayout textLayout = new TextLayout(s, f, frc);
+				textLayout.draw(g2d, 2, 6);
+
+				g2d.setColor(resetColor);
+				g2d.dispose();
 			}
+			
 		}
 
 		Square() {
 			setBackground(Color.WHITE);
-			setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+			setBorder(BorderFactory.createLineBorder(LIGHT_GRAY));
 		}
 
 		public Dimension getPreferredSize() {
@@ -69,44 +119,29 @@ public class GraphicalUI {
 
 		public void paint(Graphics g) {
 
-			int x,y,dx1,dy1,dx2,dy2,sx1,sy1,sx2,sy2;
-			
 			super.paint(g);
 
-			if (Math.random() < .5) {
+			if (Math.random() < .3) {
 
 				// filled in number code
-				x = (int) Math.floor(Math.random() * 3);
-				y = (int) Math.floor(Math.random() * 3);
+				int i = (int) Math.floor(Math.random() * 9);
 
-				dx1 = 1;
-				dy1 = 1;
-				dx2 = 25;
-				dy2 = 25;
-				sx1 = x * 24;
-				sy1 = y * 24;
-				sx2 = (x + 1) * 24;
-				sy2 = (y + 1) * 24;
+				g.drawImage(numerals[i], 1, 1, null);
 
-				g.drawImage(numerals, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2,
-						null);
 			} else {
+
+				int x, y, dx, dy;
+
 				// pencil-mark code
 				for (x = 0; x < 3; x++)
 					for (y = 0; y < 3; y++)
 						if (Math.random() < .3) {
 
-							dx1 = x * 8 + 1;
-							dy1 = y * 8 + 1;
-							dx2 = (x + 1) * 8;
-							dy2 = (y + 1) * 8;
-							sx1 = x * 8;
-							sy1 = y * 8;
-							sx2 = (x + 1) * 8;
-							sy2 = (y + 1) * 8;
+							dx = x * 8 + 1;
+							dy = y * 8 + 1;
+				
 
-							g.drawImage(marks, dx1, dy1, dx2, dy2, sx1, sy1,
-									sx2, sy2, null);
+							g.drawImage(marks[y * 3 + x], dx, dy, null);
 						}
 			}
 		}
@@ -115,7 +150,7 @@ public class GraphicalUI {
 	public static void main(String[] args) {
 
 		JFrame frame = new JFrame("  Sudoku Solver");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		JPanel board = new Board();
 
