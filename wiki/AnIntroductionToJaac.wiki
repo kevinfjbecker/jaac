@@ -15,7 +15,7 @@ Jaac is an effort to provide GoF commands without effecting source code cohesion
   * Annotations
   * Reflection
 
-= About the Source =
+= Source =
 
   * Tic-Tac-Toe
   * Sudoku Solver
