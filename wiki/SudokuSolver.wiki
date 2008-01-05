@@ -1,0 +1,5 @@
+#About the Sudoku Solver.
+
+= What it does =
+
+The Sudoku Solver uses undoable commands to implement depth first search.
