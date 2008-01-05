@@ -4,11 +4,19 @@
 
 Jaac is an effort to provide GoF commands without effecting source code cohesion.
 
-
-= Details =
+= Concepts =
 
   * Command
   * Cohesion
   * Loose Coupling
+
+= Technology =
+
   * Annotations
   * Reflection
+
+= About the Source =
+
+  * Tic-Tac-Toe
+  * Sudoku Solver
+  * Asteroids
