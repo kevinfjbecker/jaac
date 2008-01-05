@@ -1,4 +1,4 @@
-#About the Sudoku Solver.
+# About the Sudoku Solver.
 
 = What it does =
 
