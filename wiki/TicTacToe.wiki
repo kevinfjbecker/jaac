@@ -1,5 +1,5 @@
 #summary About Tic-Tac-Toe.
 
-= Introduction =
+= What it does =
 
 Tic-Tac-Toe uses undoable commands to implement min-max.
