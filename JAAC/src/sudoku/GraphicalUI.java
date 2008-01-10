@@ -6,6 +6,7 @@ import static java.awt.Color.LIGHT_GRAY;
 import static java.awt.Color.WHITE;
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
+import static sudoku.Sudoku.DIMENSION;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -21,13 +22,14 @@ import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 public class GraphicalUI {
 
 	@SuppressWarnings("serial")
-	private static class Board extends JPanel {
+	private static class BoardView extends JPanel {
 
-		Board() {
+		BoardView() {
 			setBorder(BorderFactory.createLineBorder(BLACK));
 			setLayout(new GridLayout(3, 3));
 			for (int n = 0; n < 9; n++)
@@ -42,7 +44,7 @@ public class GraphicalUI {
 			setLayout(new GridLayout(3, 3));
 			for (int i = 0, y = ((n) / 3) * 3; i < 3; i++, y++)
 				for (int k = 0, x = ((n) % 3) * 3; k < 3; k++, x++)
-				add(new Square(y, x));
+					add(new Square(y, x));
 		}
 	}
 
@@ -114,10 +116,10 @@ public class GraphicalUI {
 		int y;
 
 		Square(int y, int x) {
-			
+
 			this.y = y;
 			this.x = x;
-			
+
 			setBackground(Color.WHITE);
 			setBorder(BorderFactory.createLineBorder(LIGHT_GRAY));
 		}
@@ -130,21 +132,19 @@ public class GraphicalUI {
 
 			super.paint(g);
 
-			if (Math.random() < .3) {
+			if (board.get(y, x) != 0) {
 
-				// filled in number code
-				int i = (int) Math.floor(Math.random() * 9);
-
-				g.drawImage(numerals[i], 1, 1, null);
+				g.drawImage(numerals[board.get(y, x) - 1], 1, 1, null);
 
 			} else {
 
 				int dx, dy;
 
 				// pencil-mark code
-				for (int x = 0; x < 3; x++)
-					for (int y = 0; y < 3; y++)
-						if (Math.random() < .3) {
+				for (int y = 0; y < 3; y++)
+					for (int x = 0; x < 3; x++)
+						if (pencilmarks.isPossible(this.y, this.x, y * 3 + x
+								+ 1)) {
 
 							dx = x * 8 + 1;
 							dy = y * 8 + 1;
@@ -155,17 +155,66 @@ public class GraphicalUI {
 		}
 	}
 
+	static Board board = new Board();
+
+	static JPanel boardView = new BoardView();
+
+	static Pencilmarks pencilmarks = new Pencilmarks();
+
 	public static void main(String[] args) {
+
+		populateLogicalBoard();
 
 		JFrame frame = new JFrame("  Sudoku Solver");
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		JPanel board = new Board();
-
-		frame.getContentPane().add(board);
+		frame.getContentPane().add(boardView);
 
 		frame.pack();
 		frame.setVisible(true);
+		
+	}
+
+	private static void populateLogicalBoard() {
+
+		String s = "7---6---1-14---23--35---48----1-3---2---9---5---6-7----63---95--82---74-4---3---2";
+
+		int[][] a = new int[DIMENSION][DIMENSION];
+		for (int i = 0; i < s.length(); i++)
+			if (s.charAt(i) == '-')
+				a[i / DIMENSION][i % DIMENSION] = 0;
+			else
+				a[i / DIMENSION][i % DIMENSION] = s.charAt(i) - '0';
+		board.loadValues(a);
+
+		for (int y = 0; y < DIMENSION; y++)
+			for (int x = 0; x < DIMENSION; x++)
+				if (board.get(y, x) != 0)
+					Aggregator.setValue(pencilmarks, y, x, board.get(y, x));
+		
+		eliminatePencilmarks();
+	}
+
+	private static void eliminatePencilmarks() {
+		for (int y = 0; y < DIMENSION; y++)
+			for (int x = 0; x < DIMENSION; x++) {
+
+				for (int i = (y / 3) * 3; i < (y / 3) * 3 + 3; i++)
+					for (int k = (x / 3) * 3; k < (x / 3) * 3 + 3; k++)
+						if (board.get(i, k) != 0 && (i != y || k != x))
+							pencilmarks.setIsPossible(board.get(i, k), y, x,
+									false);
+
+				for (int i = 0; i < DIMENSION; i++)
+					if (board.get(i, x) != 0 && i != y)
+						pencilmarks.setIsPossible(board.get(i, x), y, x, false);
+
+				for (int i = 0; i < DIMENSION; i++)
+					if (board.get(y, i) != 0 && i != x)
+						pencilmarks.setIsPossible(board.get(y, i), y, x, false);
+
+			}
+		
 	}
 
 }
