@@ -30,18 +30,19 @@ public class GraphicalUI {
 		Board() {
 			setBorder(BorderFactory.createLineBorder(BLACK));
 			setLayout(new GridLayout(3, 3));
-			for (int i = 0; i < 9; i++)
-				add(new Box());
+			for (int n = 0; n < 9; n++)
+				add(new Box(n));
 		}
 	}
 
 	@SuppressWarnings("serial")
 	private static class Box extends JPanel {
-		Box() {
+		Box(int n) {
 			setBorder(BorderFactory.createLineBorder(DARK_GRAY));
 			setLayout(new GridLayout(3, 3));
-			for (int k = 0; k < 9; k++)
-				add(new Square());
+			for (int i = 0, y = ((n) / 3) * 3; i < 3; i++, y++)
+				for (int k = 0, x = ((n) % 3) * 3; k < 3; k++, x++)
+				add(new Square(y, x));
 		}
 	}
 
@@ -61,7 +62,7 @@ public class GraphicalUI {
 				Graphics2D g2d = (Graphics2D) numerals[i].getGraphics();
 
 				g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+						RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
 				Color resetColor = g2d.getColor();
 				g2d.setColor(WHITE);
@@ -89,7 +90,7 @@ public class GraphicalUI {
 				Graphics2D g2d = (Graphics2D) marks[i].getGraphics();
 
 				g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+						RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
 				Color resetColor = g2d.getColor();
 				g2d.setColor(WHITE);
@@ -105,10 +106,18 @@ public class GraphicalUI {
 				g2d.setColor(resetColor);
 				g2d.dispose();
 			}
-			
+
 		}
 
-		Square() {
+		int x;
+
+		int y;
+
+		Square(int y, int x) {
+			
+			this.y = y;
+			this.x = x;
+			
 			setBackground(Color.WHITE);
 			setBorder(BorderFactory.createLineBorder(LIGHT_GRAY));
 		}
@@ -130,16 +139,15 @@ public class GraphicalUI {
 
 			} else {
 
-				int x, y, dx, dy;
+				int dx, dy;
 
 				// pencil-mark code
-				for (x = 0; x < 3; x++)
-					for (y = 0; y < 3; y++)
+				for (int x = 0; x < 3; x++)
+					for (int y = 0; y < 3; y++)
 						if (Math.random() < .3) {
 
 							dx = x * 8 + 1;
 							dy = y * 8 + 1;
-				
 
 							g.drawImage(marks[y * 3 + x], dx, dy, null);
 						}

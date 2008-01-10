@@ -2,7 +2,7 @@ package sudoku;
 
 import static sudoku.Sudoku.DIMENSION;
 
-public class SingleCandidates implements SolverLogic {
+public class SingleCandidates {
 
 	private IPencilmarks _pencilmarks;
 
