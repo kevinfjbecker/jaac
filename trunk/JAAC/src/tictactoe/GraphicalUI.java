@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -15,7 +17,35 @@ public class GraphicalUI {
 	@SuppressWarnings("serial")
 	static class Board extends JPanel {
 
-		static int[] posMap = { 14, 96, 179 };
+		private MouseListener mouseListener = new MouseListener() {
+
+			public void mouseClicked(MouseEvent e) {
+				int x = e.getX();
+				int y = e.getY();
+				x = x / (W / 3);
+				y = y / (H / 3);
+				if (ticTacToe.isOpen(y, x)) {
+					ticTacToe.set(y, x, XsTurn ? 'x' : 'o');
+					XsTurn = !XsTurn;
+					repaint();
+				}
+			}
+
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			public void mouseExited(MouseEvent e) {
+			}
+
+			public void mousePressed(MouseEvent e) {
+			}
+
+			public void mouseReleased(MouseEvent e) {
+			}
+
+		};
+
+		static int[] posMap = { 11, 96, 179 };
 
 		static Color saturatedBlack = new Color(0, 0, 55);
 
@@ -37,12 +67,9 @@ public class GraphicalUI {
 			xMark.addPoint(0, 7);
 		}
 
-		int _h = 256;
-
-		int _w = 256;
-
 		Board() {
 			setBackground(saturatedBlack);
+			addMouseListener(mouseListener);
 		}
 
 		public Dimension getPreferredSize() {
@@ -51,10 +78,10 @@ public class GraphicalUI {
 
 		private void drawBoard(Graphics g) {
 			g.setColor(saturatedWhite);
-			g.fillRect(_w / 3 - 3, _h / 24, 6, 11 * _h / 12);
-			g.fillRect(2 * _w / 3 - 3, _h / 24, 6, 11 * _h / 12);
-			g.fillRect(_w / 24, _h / 3 - 3, 11 * _w / 12, 6);
-			g.fillRect(_w / 24, 2 * _h / 3 - 3, 11 * _w / 12, 6);
+			g.fillRect(W / 3 - 3, H / 24, 6, 11 * H / 12);
+			g.fillRect(2 * W / 3 - 3, H / 24, 6, 11 * H / 12);
+			g.fillRect(W / 24, H / 3 - 3, 11 * W / 12, 6);
+			g.fillRect(W / 24, 2 * H / 3 - 3, 11 * W / 12, 6);
 		}
 
 		void drawO(Graphics g, int x, int y) {
@@ -84,7 +111,8 @@ public class GraphicalUI {
 
 			for (int x = 0; x < 3; x++)
 				for (int y = 0; y < 3; y++) {
-					draw(g, x, y, Math.random() < 0.5 ? 'o' : 'x');
+					if (!ticTacToe.isOpen(y, x))
+						draw(g, x, y, ticTacToe.get(y, x));
 				}
 
 		}
@@ -99,9 +127,17 @@ public class GraphicalUI {
 
 	}
 
+	private static int H = 256;
+
+	private static TicTacToe ticTacToe = new TicTacToe();
+
+	private static int W = 256;
+
+	private static boolean XsTurn = true;
+
 	public static void main(String[] args) {
 
-		JFrame frame = new JFrame();
+		JFrame frame = new JFrame("  Tic-Tac-Toe");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		frame.add(new Board());
