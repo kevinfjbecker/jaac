@@ -65,6 +65,7 @@ public class GraphicalUI {
 		}
 
 		void drawX(Graphics g, int x, int y) {
+			g.setColor(saturatedWhite);
 			xMark.translate(x, y);
 			g.fillPolygon(xMark);
 			xMark.translate(-x, -y);
@@ -82,8 +83,9 @@ public class GraphicalUI {
 			drawBoard(g);
 
 			for (int x = 0; x < 3; x++)
-				for (int y = 0; y < 3; y++)
-					draw(g, x, y, 'x');
+				for (int y = 0; y < 3; y++) {
+					draw(g, x, y, Math.random() < 0.5 ? 'o' : 'x');
+				}
 
 		}
 

@@ -39,7 +39,7 @@ public class Pencilmarks implements IPencilmarks {
 		return -1;
 	}
 
-	private void initializeWorkspace() {
+	public void initializeWorkspace() {
 		for (boolean[][] row : _workspace)
 			for (boolean[] col : row)
 				for (int i = 0; i < DIMENSION; i++)
