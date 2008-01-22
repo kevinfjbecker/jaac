@@ -32,7 +32,7 @@ public class GraphicalUI {
 	@SuppressWarnings("serial")
 	private static class BoardView extends JPanel {
 
-		BoardView() {
+		private BoardView() {
 			setBorder(BorderFactory.createLineBorder(BLACK));
 			setLayout(new GridLayout(3, 3));
 			for (int n = 0; n < 9; n++)
@@ -42,22 +42,22 @@ public class GraphicalUI {
 
 	@SuppressWarnings("serial")
 	private static class Box extends JPanel {
-		Box(int n) {
+		private Box(int n) {
 			setBorder(BorderFactory.createLineBorder(DARK_GRAY));
 			setLayout(new GridLayout(3, 3));
 			for (int i = 0, y = ((n) / 3) * 3; i < 3; i++, y++)
-				for (int k = 0, x = ((n) % 3) * 3; k < 3; k++, x++){
-					add(new Square(y, x));}
+				for (int k = 0, x = ((n) % 3) * 3; k < 3; k++, x++) {
+					add(new Square(y, x));
+				}
 		}
 	}
 
 	@SuppressWarnings("serial")
-	private static class Square extends JPanel implements KeyListener,
-			MouseListener {
+	private static class Square extends JPanel implements MouseListener {
 
-		static BufferedImage marks[];
+		private static BufferedImage marks[];
 
-		static BufferedImage[] numerals;
+		private static BufferedImage[] numerals;
 
 		static {
 
@@ -115,13 +115,13 @@ public class GraphicalUI {
 
 		}
 
+		private boolean haveFocus;
+
 		private int x;
 
 		private int y;
 
-		private boolean haveFocus;
-
-		Square(int y, int x) {
+		private Square(int y, int x) {
 
 			this.y = y;
 			this.x = x;
@@ -130,48 +130,32 @@ public class GraphicalUI {
 			setBorder(BorderFactory.createLineBorder(LIGHT_GRAY));
 
 			addMouseListener(this);
-			addKeyListener(this);
+
 		}
 
 		public Dimension getPreferredSize() {
 			return new Dimension(26, 26);
 		}
 
-		public void keyPressed(KeyEvent e) {
-			System.out.println("*");
-		}
-
-		public void keyReleased(KeyEvent e) {
-			System.out.println("*");
-		}
-
-		public void keyTyped(KeyEvent e) {
-			System.out.println("*");
-		}
-
 		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
-
 		}
 
 		public void mouseEntered(MouseEvent e) {
 			haveFocus = true;
+			activeSquare = this;
 			repaint();
 		}
 
 		public void mouseExited(MouseEvent e) {
 			haveFocus = false;
+			activeSquare = null;
 			repaint();
 		}
 
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-
 		}
 
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-
 		}
 
 		public void paint(Graphics g) {
@@ -208,49 +192,44 @@ public class GraphicalUI {
 		}
 	}
 
-	static Board board = new Board();
+	private static Square activeSquare = null;
 
-	static JPanel boardView = new BoardView();
+	private static Board board = new Board();
 
-	static Pencilmarks pencilmarks = new Pencilmarks();
+	private static JPanel boardView = new BoardView();
 
-	Square[] squares = new Square[9*9];
-	
-	public static void main(String[] args) {
+	private static KeyListener keyListener = new KeyListener() {
 
-		populateLogicalBoard();
+		public void keyPressed(KeyEvent e) {
+		}
 
-		JFrame frame = new JFrame("  Sudoku Solver");
-		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		public void keyReleased(KeyEvent e) {
+		}
 
-		frame.getContentPane().add(boardView);
-		
-		frame.pack();
-		frame.setVisible(true);
+		public void keyTyped(KeyEvent e) {
+			int n = e.getKeyChar() - '0';
+			if (activeSquare != null && 0 <= n && n <= 9) {
+				activeSquare.haveFocus = false;
+				board.setValue(n, activeSquare.y, activeSquare.x);
+				resetPencilmarks();
+				boardView.repaint();
+			}
+		}
 
-	}
+	};
 
-	private static void populateLogicalBoard() {
+	private static Pencilmarks pencilmarks = new Pencilmarks();
 
-		String s = "7---6---1-14---23--35---48----1-3---2---9---5---6-7----63---95--82---74-4---3---2";
-
-		int[][] a = new int[DIMENSION][DIMENSION];
-		for (int i = 0; i < s.length(); i++)
-			if (s.charAt(i) == '-')
-				a[i / DIMENSION][i % DIMENSION] = 0;
-			else
-				a[i / DIMENSION][i % DIMENSION] = s.charAt(i) - '0';
-		board.loadValues(a);
-
+	private static void align() {
 		for (int y = 0; y < DIMENSION; y++)
 			for (int x = 0; x < DIMENSION; x++)
 				if (board.get(y, x) != 0)
 					Aggregator.setValue(pencilmarks, y, x, board.get(y, x));
 
-		eliminatePencilmarks();
 	}
 
 	private static void eliminatePencilmarks() {
+		
 		for (int y = 0; y < DIMENSION; y++)
 			for (int x = 0; x < DIMENSION; x++) {
 
@@ -269,7 +248,26 @@ public class GraphicalUI {
 						pencilmarks.setIsPossible(board.get(y, i), y, x, false);
 
 			}
+	}
 
+	public static void main(String[] args) {
+
+		JFrame frame = new JFrame("  Sudoku Solver");
+		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+		frame.addKeyListener(keyListener);
+
+		frame.getContentPane().add(boardView);
+
+		frame.pack();
+		frame.setVisible(true);
+
+	}
+
+	private static void resetPencilmarks() {
+		pencilmarks.initializeWorkspace();
+		align();
+		eliminatePencilmarks();
 	}
 
 }
