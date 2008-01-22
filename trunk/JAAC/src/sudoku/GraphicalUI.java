@@ -15,6 +15,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.RenderingHints;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
@@ -22,7 +26,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 public class GraphicalUI {
 
@@ -43,13 +46,14 @@ public class GraphicalUI {
 			setBorder(BorderFactory.createLineBorder(DARK_GRAY));
 			setLayout(new GridLayout(3, 3));
 			for (int i = 0, y = ((n) / 3) * 3; i < 3; i++, y++)
-				for (int k = 0, x = ((n) % 3) * 3; k < 3; k++, x++)
-					add(new Square(y, x));
+				for (int k = 0, x = ((n) % 3) * 3; k < 3; k++, x++){
+					add(new Square(y, x));}
 		}
 	}
 
 	@SuppressWarnings("serial")
-	private static class Square extends JPanel {
+	private static class Square extends JPanel implements KeyListener,
+			MouseListener {
 
 		static BufferedImage marks[];
 
@@ -111,9 +115,11 @@ public class GraphicalUI {
 
 		}
 
-		int x;
+		private int x;
 
-		int y;
+		private int y;
+
+		private boolean haveFocus;
 
 		Square(int y, int x) {
 
@@ -122,35 +128,82 @@ public class GraphicalUI {
 
 			setBackground(Color.WHITE);
 			setBorder(BorderFactory.createLineBorder(LIGHT_GRAY));
+
+			addMouseListener(this);
+			addKeyListener(this);
 		}
 
 		public Dimension getPreferredSize() {
 			return new Dimension(26, 26);
 		}
 
+		public void keyPressed(KeyEvent e) {
+			System.out.println("*");
+		}
+
+		public void keyReleased(KeyEvent e) {
+			System.out.println("*");
+		}
+
+		public void keyTyped(KeyEvent e) {
+			System.out.println("*");
+		}
+
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		public void mouseEntered(MouseEvent e) {
+			haveFocus = true;
+			repaint();
+		}
+
+		public void mouseExited(MouseEvent e) {
+			haveFocus = false;
+			repaint();
+		}
+
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
 		public void paint(Graphics g) {
 
 			super.paint(g);
 
-			if (board.get(y, x) != 0) {
+			if (haveFocus) {
 
-				g.drawImage(numerals[board.get(y, x) - 1], 1, 1, null);
+				g.drawLine(4, 22, 22, 22);
 
 			} else {
 
-				int dx, dy;
+				if (board.get(y, x) != 0) {
 
-				// pencil-mark code
-				for (int y = 0; y < 3; y++)
-					for (int x = 0; x < 3; x++)
-						if (pencilmarks.isPossible(this.y, this.x, y * 3 + x
-								+ 1)) {
+					g.drawImage(numerals[board.get(y, x) - 1], 1, 1, null);
 
-							dx = x * 8 + 1;
-							dy = y * 8 + 1;
+				} else {
 
-							g.drawImage(marks[y * 3 + x], dx, dy, null);
-						}
+					int dx, dy;
+
+					// pencil-mark code
+					for (int y = 0; y < 3; y++)
+						for (int x = 0; x < 3; x++)
+							if (pencilmarks.isPossible(this.y, this.x, y * 3
+									+ x + 1)) {
+
+								dx = x * 8 + 1;
+								dy = y * 8 + 1;
+
+								g.drawImage(marks[y * 3 + x], dx, dy, null);
+							}
+				}
 			}
 		}
 	}
@@ -161,6 +214,8 @@ public class GraphicalUI {
 
 	static Pencilmarks pencilmarks = new Pencilmarks();
 
+	Square[] squares = new Square[9*9];
+	
 	public static void main(String[] args) {
 
 		populateLogicalBoard();
@@ -169,10 +224,10 @@ public class GraphicalUI {
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		frame.getContentPane().add(boardView);
-
+		
 		frame.pack();
 		frame.setVisible(true);
-		
+
 	}
 
 	private static void populateLogicalBoard() {
@@ -191,7 +246,7 @@ public class GraphicalUI {
 			for (int x = 0; x < DIMENSION; x++)
 				if (board.get(y, x) != 0)
 					Aggregator.setValue(pencilmarks, y, x, board.get(y, x));
-		
+
 		eliminatePencilmarks();
 	}
 
@@ -214,7 +269,7 @@ public class GraphicalUI {
 						pencilmarks.setIsPossible(board.get(y, i), y, x, false);
 
 			}
-		
+
 	}
 
 }
