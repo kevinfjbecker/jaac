@@ -15,6 +15,8 @@ public class GraphicalUI {
 	@SuppressWarnings("serial")
 	static class Board extends JPanel {
 
+		static int[] posMap = { 14, 96, 179 };
+
 		static Color saturatedBlack = new Color(0, 0, 55);
 
 		static Color saturatedWhite = new Color(227, 227, 255);
@@ -47,17 +49,25 @@ public class GraphicalUI {
 			return new Dimension(256, 256);
 		}
 
-		void drawX(Graphics g, int x, int y) {
-			xMark.translate(x, y);
-			g.fillPolygon(xMark);
-			xMark.translate(-x, -y);
+		private void drawBoard(Graphics g) {
+			g.setColor(saturatedWhite);
+			g.fillRect(_w / 3 - 3, _h / 24, 6, 11 * _h / 12);
+			g.fillRect(2 * _w / 3 - 3, _h / 24, 6, 11 * _h / 12);
+			g.fillRect(_w / 24, _h / 3 - 3, 11 * _w / 12, 6);
+			g.fillRect(_w / 24, 2 * _h / 3 - 3, 11 * _w / 12, 6);
 		}
 
 		void drawO(Graphics g, int x, int y) {
 			g.setColor(saturatedWhite);
-			g.fillOval(0 + x, 0 + y, 64, 64);
+			g.fillOval(0 + x, 0 + y, 65, 65);
 			g.setColor(saturatedBlack);
-			g.fillOval(9 + x, 9 + y, 46, 46);
+			g.fillOval(9 + x, 9 + y, 47, 47);
+		}
+
+		void drawX(Graphics g, int x, int y) {
+			xMark.translate(x, y);
+			g.fillPolygon(xMark);
+			xMark.translate(-x, -y);
 		}
 
 		@Override
@@ -71,20 +81,18 @@ public class GraphicalUI {
 
 			drawBoard(g);
 
-//			 drawX(g, 15, 15);
-
-			 drawO(g, 13, 13);
-			 drawO(g,96,96);
-			 drawO(g,178,178);
+			for (int x = 0; x < 3; x++)
+				for (int y = 0; y < 3; y++)
+					draw(g, x, y, 'x');
 
 		}
 
-		private void drawBoard(Graphics g) {
-			g.setColor(saturatedWhite);
-			g.fillRect(_w / 3 - 3, _h / 24, 6, 11 * _h / 12);
-			g.fillRect(2 * _w / 3 - 3, _h / 24, 6, 11 * _h / 12);
-			g.fillRect(_w / 24, _h / 3 - 3, 11 * _w / 12, 6);
-			g.fillRect(_w / 24, 2 * _h / 3 - 3, 11 * _w / 12, 6);
+		private void draw(Graphics g, int x, int y, char c) {
+			if (c == 'x') {
+				drawX(g, posMap[x], posMap[y]);
+			} else {
+				drawO(g, posMap[x], posMap[y]);
+			}
 		}
 
 	}
