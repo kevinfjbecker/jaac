@@ -27,7 +27,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class GraphicalUI {
+public class SudokuGUI {
 
 	@SuppressWarnings("serial")
 	private static class BoardView extends JPanel {
