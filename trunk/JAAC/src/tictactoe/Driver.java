@@ -15,21 +15,21 @@ import action.IAction;
 
 public class Driver {
 
-	static ActionProxy actionProxy = new ActionProxy(new TicTacToe());
+	private static ActionProxy actionProxy = new ActionProxy(new TicTacToe());
 
-	static ActionHistory actionHistory = new ActionHistory();
+	private static ActionHistory actionHistory = new ActionHistory();
 
 	static {
 		actionProxy.setActionHandler(actionHistory);
 	}
 
-	static ITicTacToe ticTacToe = (ITicTacToe) Proxy.newProxyInstance(
+	private static ITicTacToe ticTacToe = (ITicTacToe) Proxy.newProxyInstance(
 			TicTacToe.class.getClassLoader(), new Class[] { ITicTacToe.class },
 			actionProxy);
 
-	static ActionGenerator actionGenerator = new ActionGenerator(ticTacToe);
+	private static ActionGenerator actionGenerator = new ActionGenerator(ticTacToe);
 
-	static BoardEvaluator boardEvaluator = new BoardEvaluator(ticTacToe);
+	private static BoardEvaluator boardEvaluator = new BoardEvaluator(ticTacToe);
 
 	private static int MAX_DEPTH = 10;
 
@@ -67,6 +67,14 @@ public class Driver {
 				ticTacToe.clear(y, x);
 	}
 
+	public static ITicTacToe getTicTacToe(){
+		return ticTacToe;
+	}
+	
+	public static boolean isGameOver(){
+		return boardEvaluator.isGameOver();
+	}
+	
 	public static void makeMinMaxMove(char c) throws SecurityException,
 			NoSuchMethodException, IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException,

@@ -11,24 +11,56 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
-public class GraphicalUI {
+public class TicTacToeGUI {
 
 	@SuppressWarnings("serial")
-	static class Board extends JPanel {
+	private static class BoardView extends JPanel {
 
 		private MouseListener mouseListener = new MouseListener() {
 
-			public void mouseClicked(MouseEvent e) {
-				int x = e.getX();
-				int y = e.getY();
-				x = x / (W / 3);
-				y = y / (H / 3);
-				if (ticTacToe.isOpen(y, x)) {
-					ticTacToe.set(y, x, XsTurn ? 'x' : 'o');
+			public void mouseClicked(MouseEvent mouseEvent) {
+
+				if (Driver.isGameOver()) {
+					return;
+				}
+
+				if (PlayersTurn) {
+
+					int x = mouseEvent.getX();
+					int y = mouseEvent.getY();
+					x = x / (W / 3);
+					y = y / (H / 3);
+					if (ticTacToe.isOpen(y, x)) {
+						ticTacToe.set(y, x, XsTurn ? 'x' : 'o');
+					}
+
+					PlayersTurn = !PlayersTurn;
 					XsTurn = !XsTurn;
 					repaint();
+
 				}
+
+				if (Driver.isGameOver()) {
+					return;
+				}
+
+				SwingUtilities.invokeLater(new Runnable() {
+
+					public void run() {
+
+						try {
+
+							computerPlayer.run();
+							repaint();
+
+						} catch (Exception exception) {
+						}
+
+					}
+				});
+
 			}
 
 			public void mouseEntered(MouseEvent e) {
@@ -45,13 +77,13 @@ public class GraphicalUI {
 
 		};
 
-		static int[] posMap = { 11, 96, 179 };
+		private static int[] posMap = { 11, 96, 179 };
 
-		static Color saturatedBlack = new Color(0, 0, 55);
+		private static Color saturatedBlack = new Color(0, 0, 55);
 
-		static Color saturatedWhite = new Color(227, 227, 255);
+		private static Color saturatedWhite = new Color(227, 227, 255);
 
-		static Polygon xMark = new Polygon();
+		private static Polygon xMark = new Polygon();
 		static {
 			xMark.addPoint(7, 0);
 			xMark.addPoint(31, 24);
@@ -67,7 +99,7 @@ public class GraphicalUI {
 			xMark.addPoint(0, 7);
 		}
 
-		Board() {
+		private BoardView() {
 			setBackground(saturatedBlack);
 			addMouseListener(mouseListener);
 		}
@@ -84,14 +116,14 @@ public class GraphicalUI {
 			g.fillRect(W / 24, 2 * H / 3 - 3, 11 * W / 12, 6);
 		}
 
-		void drawO(Graphics g, int x, int y) {
+		private void drawO(Graphics g, int x, int y) {
 			g.setColor(saturatedWhite);
 			g.fillOval(0 + x, 0 + y, 65, 65);
 			g.setColor(saturatedBlack);
 			g.fillOval(9 + x, 9 + y, 47, 47);
 		}
 
-		void drawX(Graphics g, int x, int y) {
+		private void drawX(Graphics g, int x, int y) {
 			g.setColor(saturatedWhite);
 			xMark.translate(x, y);
 			g.fillPolygon(xMark);
@@ -127,9 +159,44 @@ public class GraphicalUI {
 
 	}
 
+	private static class ComputerPlayer implements Runnable {
+
+		private int turn = 1;
+
+		public void reset() {
+			turn = 1;
+		}
+
+		public void run() {
+			try {
+
+				switch (turn) {
+				case 1:
+					Driver.makeBestMove(XsTurn ? 'x' : 'o');
+					break;
+				default:
+					Driver.makeMinMaxMove(XsTurn ? 'x' : 'o');
+					break;
+				}
+
+				PlayersTurn = !PlayersTurn;
+				XsTurn = !XsTurn;
+				turn++;
+
+			} catch (Exception exception) {
+			}
+
+		}
+
+	}
+
+	private static ComputerPlayer computerPlayer = new ComputerPlayer();
+
 	private static int H = 256;
 
-	private static TicTacToe ticTacToe = new TicTacToe();
+	private static ITicTacToe ticTacToe = Driver.getTicTacToe();
+
+	private static boolean PlayersTurn = false;
 
 	private static int W = 256;
 
@@ -140,7 +207,7 @@ public class GraphicalUI {
 		JFrame frame = new JFrame("  Tic-Tac-Toe");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		frame.add(new Board());
+		frame.add(new BoardView());
 
 		frame.pack();
 		frame.setVisible(true);
