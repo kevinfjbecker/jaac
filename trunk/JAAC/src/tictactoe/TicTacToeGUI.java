@@ -26,18 +26,18 @@ public class TicTacToeGUI {
 					return;
 				}
 
-				if (PlayersTurn) {
+				if (isPlayersTurn) {
 
 					int x = mouseEvent.getX();
 					int y = mouseEvent.getY();
 					x = x / (W / 3);
 					y = y / (H / 3);
 					if (ticTacToe.isOpen(y, x)) {
-						ticTacToe.set(y, x, XsTurn ? 'x' : 'o');
+						ticTacToe.set(y, x, isXsTurn ? 'x' : 'o');
 					}
 
-					PlayersTurn = !PlayersTurn;
-					XsTurn = !XsTurn;
+					isPlayersTurn = !isPlayersTurn;
+					isXsTurn = !isXsTurn;
 					repaint();
 
 				}
@@ -172,15 +172,15 @@ public class TicTacToeGUI {
 
 				switch (turn) {
 				case 1:
-					Driver.makeBestMove(XsTurn ? 'x' : 'o');
+					Driver.makeBestMove(isXsTurn ? 'x' : 'o');
 					break;
 				default:
-					Driver.makeMinMaxMove(XsTurn ? 'x' : 'o');
+					Driver.makeMinMaxMove(isXsTurn ? 'x' : 'o');
 					break;
 				}
 
-				PlayersTurn = !PlayersTurn;
-				XsTurn = !XsTurn;
+				isPlayersTurn = !isPlayersTurn;
+				isXsTurn = !isXsTurn;
 				turn++;
 
 			} catch (Exception exception) {
@@ -192,20 +192,21 @@ public class TicTacToeGUI {
 
 	private static ComputerPlayer computerPlayer = new ComputerPlayer();
 
+	private static boolean isPlayersTurn = true;
+
+	private static boolean isXsTurn = true;
+
 	private static int H = 256;
 
 	private static ITicTacToe ticTacToe = Driver.getTicTacToe();
 
-	private static boolean PlayersTurn = false;
-
 	private static int W = 256;
-
-	private static boolean XsTurn = true;
 
 	public static void main(String[] args) {
 
 		JFrame frame = new JFrame("  Tic-Tac-Toe");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
 
 		frame.add(new BoardView());
 

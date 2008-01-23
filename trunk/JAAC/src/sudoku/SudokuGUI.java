@@ -254,6 +254,7 @@ public class SudokuGUI {
 
 		JFrame frame = new JFrame("  Sudoku Solver");
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		frame.setResizable(false);
 
 		frame.addKeyListener(keyListener);
 
