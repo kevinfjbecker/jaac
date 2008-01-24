@@ -3,3 +3,5 @@
 = What it does =
 
 The Sudoku Solver uses undoable commands to implement depth first search.
+
+http://jaac.googlecode.com/files/sudoku-screen.PNG
