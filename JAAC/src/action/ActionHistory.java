@@ -25,6 +25,11 @@ public class ActionHistory implements Executor {
 		return _placeHolder == -1;
 	}
 
+	public void clear() {
+		_placeHolder = -1;
+		_history.clear();
+	}
+
 	public void closeTransaction() {
 		_history.add(_openTransaction);
 		_placeHolder++;

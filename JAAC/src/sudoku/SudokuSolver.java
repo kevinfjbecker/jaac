@@ -153,10 +153,15 @@ public class SudokuSolver {
 		_pencilmarksProxy.setActionHandler(_actionHistory);
 
 		applyAriadnesThread();
+		
+		_boardProxy.setActionHandler(_defaultExecutor);
+		_pencilmarksProxy.setActionHandler(_defaultExecutor);
+		
+		_actionHistory.clear();
 
 	}
 
-	private void eliminationStep() {
+	public void eliminationStep() {
 		for (int y = 0; y < DIMENSION; y++)
 			for (int x = 0; x < DIMENSION; x++) {
 				eliminationTraverseRow(y, x);
@@ -191,6 +196,15 @@ public class SudokuSolver {
 					_board.setValue(_pencilmarks.getValue(y, x), y, x);
 	}
 
+	public IBoard getBoard() {
+		return _board;
+	}
+
+	public IPencilmarks getPencilmarks() {
+		// TODO Auto-generated method stub
+		return _pencilmarks;
+	}
+
 	private boolean hasBlanksInPencilmarks() {
 		for (int y = 0; y < DIMENSION; y++)
 			for (int x = 0; x < DIMENSION; x++)
@@ -211,6 +225,10 @@ public class SudokuSolver {
 			else
 				a[i / DIMENSION][i % DIMENSION] = s.charAt(i) - '0';
 		_board.loadValues(a);
+	}
+
+	public void resetPencilmarks() {
+		_pencilmarks.clear();
 	}
 
 	public String showBoard() {

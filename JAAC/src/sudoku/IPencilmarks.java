@@ -4,8 +4,11 @@ import action.Undoable;
 
 public interface IPencilmarks {
 
+	// TODO: this is the sort of action that requires a "final" annotation
+	void clear();
+
 	boolean equals(Object object);
-	
+
 	boolean[] getMarks(int y, int x);
 
 	int getNumberOfPossibilities(int y, int x);

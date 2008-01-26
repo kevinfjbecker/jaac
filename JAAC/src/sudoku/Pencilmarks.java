@@ -13,6 +13,10 @@ public class Pencilmarks implements IPencilmarks {
 		initializeWorkspace();
 	}
 
+	public void clear() {
+		initializeWorkspace();
+	}
+
 	public boolean equals(Object object) {
 		if (object instanceof Pencilmarks)
 			return Arrays.deepEquals(((Pencilmarks) object)._workspace,
