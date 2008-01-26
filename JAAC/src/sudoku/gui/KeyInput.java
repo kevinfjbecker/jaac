@@ -5,13 +5,13 @@ import java.awt.event.KeyListener;
 
 import sudoku.SudokuSolver;
 
-public class KeyInputListener implements KeyListener {
+public class KeyInput implements KeyListener {
 
 	private BoardView boardView;
 
 	private SudokuSolver sudokuSolver;
 
-	public KeyInputListener(BoardView boardView, SudokuSolver sudokuSolver) {
+	public KeyInput(BoardView boardView, SudokuSolver sudokuSolver) {
 		this.boardView = boardView;
 		this.sudokuSolver = sudokuSolver;
 	}

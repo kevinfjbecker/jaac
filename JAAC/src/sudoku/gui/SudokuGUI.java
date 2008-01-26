@@ -5,6 +5,7 @@ import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 import sudoku.SudokuSolver;
 
@@ -14,12 +15,15 @@ public class SudokuGUI {
 
 	private static BoardView boardView;
 
-	private static KeyInputListener keyListener;
+	private static KeyInput keyInput;
+	
+	private static MenuInput menuInput;
 
 	static {
 		sudokuSolver = new SudokuSolver();
 		boardView = new BoardView(sudokuSolver);
-		keyListener = new KeyInputListener(boardView, sudokuSolver);
+		keyInput = new KeyInput(boardView, sudokuSolver);
+		menuInput = new MenuInput(boardView, sudokuSolver);
 	}
 
 	private static JMenuBar getMenu() {
@@ -37,7 +41,10 @@ public class SudokuGUI {
 		JMenu puzzleMenu = new JMenu("Puzzle");
 		puzzleMenu.add("Set as Start");
 		puzzleMenu.add("Restart");
-		puzzleMenu.add("Solve");
+		
+		JMenuItem solveMenuItem = new JMenuItem("Solve");
+		solveMenuItem.addActionListener(menuInput);
+		puzzleMenu.add(solveMenuItem);
 
 		JMenu viewMenu = new JMenu("View");
 		viewMenu.add("Show Pencil Marks");
@@ -61,7 +68,7 @@ public class SudokuGUI {
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.setResizable(false);
 
-		frame.addKeyListener(keyListener);
+		frame.addKeyListener(keyInput);
 
 		frame.setJMenuBar(getMenu());
 
