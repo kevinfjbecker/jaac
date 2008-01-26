@@ -90,6 +90,7 @@ public class MenuInput implements ActionListener, ItemListener {
 				_sudokuSolver.getBoard().copy(_sudokuSolver.getResetBoard());
 				_sudokuSolver.resetPencilmarks();
 				_sudokuSolver.align();
+				_sudokuSolver.eliminationStep();
 			}
 		});
 
