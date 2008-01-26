@@ -10,6 +10,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -17,65 +19,6 @@ public class TicTacToeGUI {
 
 	@SuppressWarnings("serial")
 	private static class BoardView extends JPanel {
-
-		private MouseListener mouseListener = new MouseListener() {
-
-			public void mouseClicked(MouseEvent mouseEvent) {
-
-				if (Driver.isGameOver()) {
-					return;
-				}
-
-				if (isPlayersTurn) {
-
-					int x = mouseEvent.getX();
-					int y = mouseEvent.getY();
-					x = x / (W / 3);
-					y = y / (H / 3);
-					if (ticTacToe.isOpen(y, x)) {
-						ticTacToe.set(y, x, isXsTurn ? 'x' : 'o');
-					}
-
-					isPlayersTurn = !isPlayersTurn;
-					isXsTurn = !isXsTurn;
-					repaint();
-
-				}
-
-				if (Driver.isGameOver()) {
-					return;
-				}
-
-				SwingUtilities.invokeLater(new Runnable() {
-
-					public void run() {
-
-						try {
-
-							computerPlayer.run();
-							repaint();
-
-						} catch (Exception exception) {
-						}
-
-					}
-				});
-
-			}
-
-			public void mouseEntered(MouseEvent e) {
-			}
-
-			public void mouseExited(MouseEvent e) {
-			}
-
-			public void mousePressed(MouseEvent e) {
-			}
-
-			public void mouseReleased(MouseEvent e) {
-			}
-
-		};
 
 		private static int[] posMap = { 11, 96, 179 };
 
@@ -99,13 +42,61 @@ public class TicTacToeGUI {
 			xMark.addPoint(0, 7);
 		}
 
+		private MouseListener mouseListener = new MouseListener() {
+			public void mouseClicked(MouseEvent mouseEvent) {
+				if (Driver.isGameOver()) {
+					return;
+				}
+				if (isPlayersTurn) {
+					int x = mouseEvent.getX();
+					int y = mouseEvent.getY();
+					x = x / (W / 3);
+					y = y / (H / 3);
+					if (ticTacToe.isOpen(y, x)) {
+						ticTacToe.set(y, x, isXsTurn ? 'x' : 'o');
+					}
+					isPlayersTurn = !isPlayersTurn;
+					isXsTurn = !isXsTurn;
+					repaint();
+				}
+				if (Driver.isGameOver()) {
+					return;
+				}
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							computerPlayer.run();
+							repaint();
+						} catch (Exception exception) {
+						}
+					}
+				});
+			}
+
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			public void mouseExited(MouseEvent e) {
+			}
+
+			public void mousePressed(MouseEvent e) {
+			}
+
+			public void mouseReleased(MouseEvent e) {
+			}
+		};
+
 		private BoardView() {
 			setBackground(saturatedBlack);
 			addMouseListener(mouseListener);
 		}
 
-		public Dimension getPreferredSize() {
-			return new Dimension(256, 256);
+		private void draw(Graphics g, int x, int y, char c) {
+			if (c == 'x') {
+				drawX(g, posMap[x], posMap[y]);
+			} else {
+				drawO(g, posMap[x], posMap[y]);
+			}
 		}
 
 		private void drawBoard(Graphics g) {
@@ -130,6 +121,10 @@ public class TicTacToeGUI {
 			xMark.translate(-x, -y);
 		}
 
+		public Dimension getPreferredSize() {
+			return new Dimension(256, 256);
+		}
+
 		@Override
 		public void paint(Graphics g) {
 			super.paint(g);
@@ -147,14 +142,6 @@ public class TicTacToeGUI {
 						draw(g, x, y, ticTacToe.get(y, x));
 				}
 
-		}
-
-		private void draw(Graphics g, int x, int y, char c) {
-			if (c == 'x') {
-				drawX(g, posMap[x], posMap[y]);
-			} else {
-				drawO(g, posMap[x], posMap[y]);
-			}
 		}
 
 	}
@@ -192,21 +179,49 @@ public class TicTacToeGUI {
 
 	private static ComputerPlayer computerPlayer = new ComputerPlayer();
 
+	private static int H = 256;
+
 	private static boolean isPlayersTurn = true;
 
 	private static boolean isXsTurn = true;
 
-	private static int H = 256;
-
 	private static ITicTacToe ticTacToe = Driver.getTicTacToe();
 
 	private static int W = 256;
+
+	public static JMenuBar getMenu() {
+
+		JMenuBar menuBar = new JMenuBar();
+
+		JMenu fileMenu = new JMenu("File");
+		fileMenu.add("Exit");
+
+		JMenu gameMenu = new JMenu("Game");
+		gameMenu.add("New Game");
+		gameMenu.add("Play as 'X'");
+		gameMenu.add("Play as 'O'");
+		
+		JMenu viewMenu = new JMenu("View");
+		viewMenu.add("Watch MinMax");
+		
+		JMenu helpMenu = new JMenu("Help");
+		helpMenu.add("About");
+
+		menuBar.add(fileMenu);
+		menuBar.add(gameMenu);
+		menuBar.add(viewMenu);
+		menuBar.add(helpMenu);
+
+		return menuBar;
+	}
 
 	public static void main(String[] args) {
 
 		JFrame frame = new JFrame("  Tic-Tac-Toe");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
+
+		frame.setJMenuBar(getMenu());
 
 		frame.add(new BoardView());
 
