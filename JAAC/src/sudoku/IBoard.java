@@ -4,6 +4,9 @@ import action.Undoable;
 
 public interface IBoard {
 
+	// TODO: this is the sort of action that requires a "final" annotation
+	void clear();
+
 	void copy(IBoard other);
 
 	boolean equals(Object object);

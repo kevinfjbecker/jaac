@@ -17,6 +17,8 @@ public class BoardView extends JPanel {
 	private Square activeSquare = null;
 
 	private SudokuSolver sudokuSolver;
+	
+	private boolean showPencilmarks;
 
 	public BoardView(SudokuSolver sudokuSolver) {
 		this.sudokuSolver = sudokuSolver;
@@ -38,8 +40,16 @@ public class BoardView extends JPanel {
 		return sudokuSolver.getPencilmarks();
 	}
 
+	public boolean getShowPencilmarks() {
+		return showPencilmarks;
+	}
+
 	public void setActiveSquare(Square activeSquare) {
 		this.activeSquare = activeSquare;
+	}
+
+	public void setShowPencilmarks(boolean showPencilmarks) {
+		this.showPencilmarks = showPencilmarks;
 	}
 
 }

@@ -13,6 +13,12 @@ public class Board implements IBoard {
 		initializeBoard();
 	}
 
+	
+	public void clear() {
+		initializeBoard();
+	}
+
+
 	public void copy(IBoard other) {
 		for (int y = 0; y < DIMENSION; y++)
 			for (int x = 0; x < DIMENSION; x++)
