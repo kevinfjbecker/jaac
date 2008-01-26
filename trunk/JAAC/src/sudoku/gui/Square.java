@@ -152,15 +152,15 @@ public class Square extends JPanel implements MouseListener {
 				g.drawImage(numerals[boardView.getBoard().get(y, x) - 1], 1, 1,
 						null);
 
-			} else {
+			} else if (boardView.getShowPencilmarks()) {
 
 				int dx, dy;
 
 				// pencil-mark code
 				for (int y = 0; y < 3; y++)
 					for (int x = 0; x < 3; x++)
-						if (boardView.getPencilmarks().isPossible(this.y, this.x, y * 3 + x
-								+ 1)) {
+						if (boardView.getPencilmarks().isPossible(this.y,
+								this.x, y * 3 + x + 1)) {
 
 							dx = x * 8 + 1;
 							dy = y * 8 + 1;
@@ -174,6 +174,5 @@ public class Square extends JPanel implements MouseListener {
 	public void setHasFocus(boolean b) {
 		haveFocus = b;
 	}
-	
-	
+
 }
