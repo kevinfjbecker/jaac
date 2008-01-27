@@ -1,8 +1,8 @@
 package sudoku;
 
 /*
- * 	candidateLinesTest is from
- *  http://www.sudokuoftheday.com/pages/techniques-3.php
+ *  dml11 and AI Escargot can be  found on
+ *  http://www.sudoku.com/boards/viewtopic.php?t=4212
  * 
  *  other examples come from http://www.fiendishsudoku.com/sudoku.html
  *  on Wednesday, 4th April 2007
@@ -11,8 +11,9 @@ public interface Sudoku {
 
 	int DIMENSION = 9;
 
-	String REALLY_FREAKING_HARD_EXAMPLE = "1---5------6--9----8-2----4-4-" +
-			"-3---8--7----6-9-----1---3-8----2-----4-5-----1-7--";
+	String dml11 = "1---5------6--9----8-2----4-4--3---8--7----6-9-----1---3-8----2-----4-5-----1-7--";
+
+	String AIEscargot = "1----7-9--3--2---8--96--5----53--9---1--8---26----4---3------1--4------7--7---3--";
 
 	int[][] easyExample = { { 2, 3, 0, 0, 8, 0, 0, 7, 9 },
 			{ 1, 0, 0, 0, 6, 0, 0, 0, 3 }, { 0, 0, 7, 0, 0, 0, 6, 0, 0 },

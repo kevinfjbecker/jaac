@@ -72,13 +72,6 @@ public class MenuInput implements ActionListener, ItemListener {
 			}
 		});
 
-		_menuActions.put("Stop", new Runnable() {
-			public void run() {
-				if (_sudokuSolver.isSolving())
-					_sudokuSolver.stop();
-			}
-		});
-
 		_menuActions.put("Exit", new Runnable() {
 			public void run() {
 				System.exit(0);

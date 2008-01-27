@@ -10,6 +10,9 @@ import action.ActionHistory;
 import action.ActionProxy;
 import action.Executor;
 
+/*
+ *  A Nishio based solver.
+ */
 public class SudokuSolver {
 
 	public static void main(String... args) throws IllegalArgumentException,
@@ -18,7 +21,7 @@ public class SudokuSolver {
 
 		SudokuSolver sudokuSolver = new SudokuSolver();
 
-		sudokuSolver.loadValues("1---5------6--9----8-2----4-4--3---8--7----6-9-----1---3-8----2-----4-5-----1-7--");
+		sudokuSolver.loadValues(Sudoku.AIEscargot);
 
 		System.out.println(sudokuSolver.showBoard());
 
@@ -51,8 +54,6 @@ public class SudokuSolver {
 	private Board _resetBoard;
 
 	private SingleCandidates _singleCandidates;
-
-	private boolean _stopNow;
 
 	public SudokuSolver() {
 
@@ -108,19 +109,15 @@ public class SudokuSolver {
 						n = _pencilmarks.getNumberOfPossibilities(y, x);
 					}
 
+		// gaurd clause
 		if (minX == -1)
 			return;
 
 		for (int value = 1; value <= DIMENSION; value++) {
 
-			if (_stopNow) {
-				return;
-			}
-
 			if (_pencilmarks.isPossible(minY, minX, value)) {
 
 				_actionHistory.openTransaction();
-				_board.setValue(value, minY, minX);
 				Aggregator.setValue(_pencilmarks, minY, minX, value);
 				applyLogic();
 				_actionHistory.closeTransaction();
@@ -133,12 +130,12 @@ public class SudokuSolver {
 
 			}
 		}
-		
+
 		if (_board.isSolved())
 			return;
-		
+
 		_actionHistory.undo();
-		
+
 	}
 
 	private void applyLogic() {
@@ -178,8 +175,6 @@ public class SudokuSolver {
 		_actionHistory.clear();
 
 		_isSolving = false;
-
-		_stopNow = false;
 
 	}
 
@@ -274,10 +269,6 @@ public class SudokuSolver {
 
 	public String showPencilmarks() {
 		return Viewer.showPencilmarks(_pencilmarks);
-	}
-
-	public void stop() {
-		_stopNow = true;
 	}
 
 }
