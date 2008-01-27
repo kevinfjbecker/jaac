@@ -16,6 +16,10 @@ public class SudokuMenu {
 		JMenuItem newMenuItem = new JMenuItem("New");
 		newMenuItem.addActionListener(menuInput);
 		fileMenu.add(newMenuItem);
+		
+		JMenuItem loadMenuItem = new JMenuItem("Load");
+		loadMenuItem.addActionListener(menuInput);
+		fileMenu.add(loadMenuItem);
 
 		JMenuItem exitMenuItem = new JMenuItem("Exit");
 		exitMenuItem.addActionListener(menuInput);

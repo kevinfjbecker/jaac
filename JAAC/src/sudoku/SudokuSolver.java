@@ -18,7 +18,7 @@ public class SudokuSolver {
 
 		SudokuSolver sudokuSolver = new SudokuSolver();
 
-		sudokuSolver.loadValues(Sudoku.fiendishExample);
+		sudokuSolver.loadValues(Sudoku.moderateExample);
 
 		System.out.println(sudokuSolver.showBoard());
 
@@ -46,8 +46,8 @@ public class SudokuSolver {
 
 	private ActionProxy _pencilmarksProxy;
 
-	 private Board resetBoard;
-	
+	private Board resetBoard;
+
 	private SingleCandidates _singleCandidates;
 
 	public SudokuSolver() {
@@ -217,17 +217,15 @@ public class SudokuSolver {
 					return true;
 		return false;
 	}
-	
+
 	public void loadValues(int[][] boardValues) {
 		_board.loadValues(boardValues);
 	}
 
-	
-	
 	public void loadValues(String s) {
 		int[][] a = new int[DIMENSION][DIMENSION];
 		for (int i = 0; i < s.length(); i++)
-			if (s.charAt(i) == '-')
+			if (s.charAt(i) == '-' || s.charAt(i) == '0' || s.charAt(i) == '.')
 				a[i / DIMENSION][i % DIMENSION] = 0;
 			else
 				a[i / DIMENSION][i % DIMENSION] = s.charAt(i) - '0';
