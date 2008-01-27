@@ -149,8 +149,14 @@ public class Square extends JPanel implements MouseListener {
 
 			if (boardView.getBoard().get(y, x) != 0) {
 
-				g.drawImage(numerals[boardView.getBoard().get(y, x) - 1], 1, 1,
-						null);
+				try {
+
+					g.drawImage(numerals[boardView.getBoard().get(y, x) - 1],
+							1, 1, null);
+
+				} catch (IndexOutOfBoundsException e) {
+					// the board has been set to 0 at this position
+				}
 
 			} else if (boardView.getShowPencilmarks()) {
 

@@ -47,10 +47,6 @@ public class SudokuMenu {
 		solveMenuItem.addActionListener(menuInput);
 		puzzleMenu.add(solveMenuItem);
 
-		JMenuItem stopMenuItem = new JMenuItem("Stop");
-		stopMenuItem.addActionListener(menuInput);
-		puzzleMenu.add(stopMenuItem);
-
 		JMenu viewMenu = new JMenu("View");
 
 		JCheckBoxMenuItem showMarksMenuItem;
