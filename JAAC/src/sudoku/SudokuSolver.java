@@ -18,7 +18,7 @@ public class SudokuSolver {
 
 		SudokuSolver sudokuSolver = new SudokuSolver();
 
-		sudokuSolver.loadValues(Sudoku.moderateExample);
+		sudokuSolver.loadValues("1---5------6--9----8-2----4-4--3---8--7----6-9-----1---3-8----2-----4-5-----1-7--");
 
 		System.out.println(sudokuSolver.showBoard());
 
@@ -42,13 +42,17 @@ public class SudokuSolver {
 
 	private Executor _defaultExecutor;
 
+	private boolean _isSolving;
+
 	private IPencilmarks _pencilmarks;
 
 	private ActionProxy _pencilmarksProxy;
 
-	private Board resetBoard;
+	private Board _resetBoard;
 
 	private SingleCandidates _singleCandidates;
+
+	private boolean _stopNow;
 
 	public SudokuSolver() {
 
@@ -107,10 +111,16 @@ public class SudokuSolver {
 		if (minX == -1)
 			return;
 
-		for (int value = 1; value <= DIMENSION; value++)
+		for (int value = 1; value <= DIMENSION; value++) {
+
+			if (_stopNow) {
+				return;
+			}
+
 			if (_pencilmarks.isPossible(minY, minX, value)) {
 
 				_actionHistory.openTransaction();
+				_board.setValue(value, minY, minX);
 				Aggregator.setValue(_pencilmarks, minY, minX, value);
 				applyLogic();
 				_actionHistory.closeTransaction();
@@ -121,10 +131,14 @@ public class SudokuSolver {
 					applyAriadnesThread();
 				}
 
-				if (_board.isSolved())
-					return;
-				_actionHistory.undo();
 			}
+		}
+		
+		if (_board.isSolved())
+			return;
+		
+		_actionHistory.undo();
+		
 	}
 
 	private void applyLogic() {
@@ -147,6 +161,8 @@ public class SudokuSolver {
 			SecurityException, ClassNotFoundException, IllegalAccessException,
 			InvocationTargetException, NoSuchMethodException {
 
+		_isSolving = true;
+
 		align();
 
 		applyLogic();
@@ -160,6 +176,10 @@ public class SudokuSolver {
 		_pencilmarksProxy.setActionHandler(_defaultExecutor);
 
 		_actionHistory.clear();
+
+		_isSolving = false;
+
+		_stopNow = false;
 
 	}
 
@@ -207,7 +227,7 @@ public class SudokuSolver {
 	}
 
 	public Board getResetBoard() {
-		return resetBoard;
+		return _resetBoard;
 	}
 
 	private boolean hasBlanksInPencilmarks() {
@@ -216,6 +236,10 @@ public class SudokuSolver {
 				if (_pencilmarks.getNumberOfPossibilities(y, x) == 0)
 					return true;
 		return false;
+	}
+
+	public boolean isSolving() {
+		return _isSolving;
 	}
 
 	public void loadValues(int[][] boardValues) {
@@ -241,7 +265,7 @@ public class SudokuSolver {
 	}
 
 	public void setResetBoard(Board resetBoard) {
-		this.resetBoard = resetBoard;
+		this._resetBoard = resetBoard;
 	}
 
 	public String showBoard() {
@@ -250,6 +274,10 @@ public class SudokuSolver {
 
 	public String showPencilmarks() {
 		return Viewer.showPencilmarks(_pencilmarks);
+	}
+
+	public void stop() {
+		_stopNow = true;
 	}
 
 }
