@@ -1,7 +1,5 @@
-#Listing of site contents.
+#summary Listing of site contents.
 
 || || Welcome to JAAC || ||
 || [http://code.google.com/p/jaac/wiki/SudokuSolver SudokuSolver] || || ||
-|| || || ||
-
-[http://code.google.com/p/jaac/wiki/SudokuSolver SudokuSolver]
+|| [http://code.google.com/p/jaac/wiki/TicTacToe TicTacToe]       || || ||
