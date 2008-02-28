@@ -1,0 +1,1 @@
+#summary About the Command Design Pattern.
