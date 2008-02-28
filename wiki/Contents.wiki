@@ -1,12 +1,12 @@
 #summary Listing of site contents.
 
-|| Welcome to JAAC || ||
-|| Example Applications || ||
-|| || [http://code.google.com/p/jaac/wiki/SudokuSolver SudokuSolver] ||
-|| || [http://code.google.com/p/jaac/wiki/TicTacToe TicTacToe]       ||
-|| || [http://code.google.com/p/jaac/wiki/Asteroids Asteroids]       ||
+|| Welcome to JAAC ||
 
-|| Concepts || ||
+|| Example Applications ||                                                ||
+|| || [http://code.google.com/p/jaac/wiki/SudokuSolver SudokuSolver]      ||
+|| || [http://code.google.com/p/jaac/wiki/TicTacToe TicTacToe]            ||
+|| || [http://code.google.com/p/jaac/wiki/Asteroids Asteroids]            ||
+|| Concepts ||                                                            ||
 || || [http://code.google.com/p/jaac/wiki/CommandPattern Command Pattern] ||
-|| || [http://code.google.com/p/jaac/wiki/Cohesion Cohesion] ||
-|| || [http://code.google.com/p/jaac/wiki/LooseCoupling Loose Coupling] ||
+|| || [http://code.google.com/p/jaac/wiki/Cohesion Cohesion]              ||
+|| || [http://code.google.com/p/jaac/wiki/LooseCoupling Loose Coupling]   ||
