@@ -1,1 +1,1 @@
-#summary About the principle of Cohesion
+#summary About the principle of Cohesion.
