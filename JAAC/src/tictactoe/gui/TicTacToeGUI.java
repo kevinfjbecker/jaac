@@ -10,8 +10,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -192,39 +190,13 @@ public class TicTacToeGUI {
 
 	private static int W = 256;
 
-	public static JMenuBar getMenu() {
-
-		JMenuBar menuBar = new JMenuBar();
-
-		JMenu fileMenu = new JMenu("File");
-		fileMenu.add("Exit");
-
-		JMenu gameMenu = new JMenu("Game");
-		gameMenu.add("New Game");
-		gameMenu.add("Play as 'X'");
-		gameMenu.add("Play as 'O'");
-		
-		JMenu viewMenu = new JMenu("View");
-		viewMenu.add("Watch MinMax");
-		
-		JMenu helpMenu = new JMenu("Help");
-		helpMenu.add("About");
-
-		menuBar.add(fileMenu);
-		menuBar.add(gameMenu);
-		menuBar.add(viewMenu);
-		menuBar.add(helpMenu);
-
-		return menuBar;
-	}
-
 	public static void main(String[] args) {
 
 		JFrame frame = new JFrame("  Tic-Tac-Toe");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 
-		frame.setJMenuBar(getMenu());
+		frame.setJMenuBar(TicTacToeMenu.getMenu());
 
 		frame.add(new BoardView());
 
