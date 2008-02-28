@@ -25,8 +25,8 @@ public class MenuInput implements ActionListener, ItemListener {
 	private SudokuSolver _sudokuSolver;
 
 	public MenuInput(BoardView boardView, SudokuSolver sudokuSolver) {
-		this._boardView = boardView;
-		this._sudokuSolver = sudokuSolver;
+		_boardView = boardView;
+		_sudokuSolver = sudokuSolver;
 		_menuActions = new HashMap<String, Runnable>();
 		populateMenuActions();
 	}

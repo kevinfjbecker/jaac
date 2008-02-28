@@ -1,4 +1,4 @@
-package tictactoe;
+package tictactoe.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,6 +14,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
+import tictactoe.Driver;
+import tictactoe.ITicTacToe;
 
 public class TicTacToeGUI {
 
