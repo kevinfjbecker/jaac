@@ -2,18 +2,28 @@ package tictactoe.gui;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+
+import tictactoe.gui.MenuInput;
 
 public class TicTacToeMenu {
 
-	public static JMenuBar getMenu() {
+	public static JMenuBar getMenu(MenuInput menuInput) {
 
 		JMenuBar menuBar = new JMenuBar();
 
 		JMenu fileMenu = new JMenu("File");
-		fileMenu.add("Exit");
+		
+		JMenuItem exitMenuItem = new JMenuItem("Exit");
+		exitMenuItem.addActionListener(menuInput);
+		fileMenu.add(exitMenuItem);
 
 		JMenu gameMenu = new JMenu("Game");
-		gameMenu.add("New Game");
+		
+		JMenuItem newGameMenuItem = new JMenuItem("New Game");
+		newGameMenuItem.addActionListener(menuInput);
+		gameMenu.add(newGameMenuItem);
+		
 		gameMenu.add("Play as 'X'");
 		gameMenu.add("Play as 'O'");
 		
