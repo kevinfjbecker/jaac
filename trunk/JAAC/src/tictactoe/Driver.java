@@ -15,48 +15,50 @@ import action.IAction;
 
 public class Driver {
 
-	private static ActionProxy actionProxy = new ActionProxy(new TicTacToe());
+	private ActionProxy actionProxy = new ActionProxy(new TicTacToe());
 
-	private static ActionHistory actionHistory = new ActionHistory();
+	private ActionHistory actionHistory = new ActionHistory();
 
-	static {
-		actionProxy.setActionHandler(actionHistory);
-	}
-
-	private static ITicTacToe ticTacToe = (ITicTacToe) Proxy.newProxyInstance(
+	private ITicTacToe ticTacToe = (ITicTacToe) Proxy.newProxyInstance(
 			TicTacToe.class.getClassLoader(), new Class[] { ITicTacToe.class },
 			actionProxy);
 
-	private static ActionGenerator actionGenerator = new ActionGenerator(ticTacToe);
+	private ActionGenerator actionGenerator = new ActionGenerator(ticTacToe);
 
-	private static BoardEvaluator boardEvaluator = new BoardEvaluator(ticTacToe);
+	private BoardEvaluator boardEvaluator = new BoardEvaluator(ticTacToe);
 
-	private static int MAX_DEPTH = 10;
+	private int MAX_DEPTH = 10;
+
+	public Driver() {
+		actionProxy.setActionHandler(actionHistory);
+	}
 
 	public static void main(String[] args) throws SecurityException,
 			NoSuchMethodException, IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException,
 			ClassNotFoundException {
 
+		Driver d = new Driver();
+
 		char c = 'x';
-		for (int i = 1; !boardEvaluator.isGameOver() && i <= 1; i++) {
-			makeRandomMove(c);
-			System.out.println(ticTacToe);
+		for (int i = 1; !d.boardEvaluator.isGameOver() && i <= 1; i++) {
+			d.makeRandomMove(c);
+			System.out.println(d.ticTacToe);
 			c = c == 'x' ? 'o' : 'x';
-			if (boardEvaluator.isGameOver())
+			if (d.boardEvaluator.isGameOver())
 				break;
-			makeHumanMove(c);
-			System.out.println(ticTacToe);
+			d.makeHumanMove(c);
+			System.out.println(d.ticTacToe);
 			c = c == 'x' ? 'o' : 'x';
 		}
-		while (!boardEvaluator.isGameOver()) {
-			makeMinMaxMove(c);
-			System.out.println(ticTacToe);
+		while (!d.boardEvaluator.isGameOver()) {
+			d.makeMinMaxMove(c);
+			System.out.println(d.ticTacToe);
 			c = c == 'x' ? 'o' : 'x';
-			if (boardEvaluator.isGameOver())
+			if (d.boardEvaluator.isGameOver())
 				break;
-			makeHumanMove(c);
-			System.out.println(ticTacToe);
+			d.makeHumanMove(c);
+			System.out.println(d.ticTacToe);
 			c = c == 'x' ? 'o' : 'x';
 		}
 	}
@@ -67,15 +69,15 @@ public class Driver {
 				ticTacToe.clear(y, x);
 	}
 
-	public static ITicTacToe getTicTacToe(){
+	public ITicTacToe getTicTacToe() {
 		return ticTacToe;
 	}
-	
-	public static boolean isGameOver(){
+
+	public boolean isGameOver() {
 		return boardEvaluator.isGameOver();
 	}
-	
-	public static void makeMinMaxMove(char c) throws SecurityException,
+
+	public void makeMinMaxMove(char c) throws SecurityException,
 			NoSuchMethodException, IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException,
 			ClassNotFoundException {
@@ -96,7 +98,7 @@ public class Driver {
 		actions.get(best).execute();
 	}
 
-	private static int p_max_at(char c, int d) throws SecurityException,
+	private int p_max_at(char c, int d) throws SecurityException,
 			NoSuchMethodException, IllegalArgumentException,
 			ClassNotFoundException, IllegalAccessException,
 			InvocationTargetException {
@@ -114,7 +116,7 @@ public class Driver {
 		return max;
 	}
 
-	private static int p_min_at(char c, int d) throws SecurityException,
+	private int p_min_at(char c, int d) throws SecurityException,
 			IllegalArgumentException, NoSuchMethodException,
 			ClassNotFoundException, IllegalAccessException,
 			InvocationTargetException {
@@ -132,7 +134,7 @@ public class Driver {
 		return min;
 	}
 
-	public static void makeBestMove(char c) throws SecurityException,
+	public void makeBestMove(char c) throws SecurityException,
 			NoSuchMethodException, IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException,
 			ClassNotFoundException {
@@ -152,7 +154,7 @@ public class Driver {
 		actions.get(best).execute();
 	}
 
-	private static void makeHumanMove(char c) {
+	private void makeHumanMove(char c) {
 		System.out.print("Make your move (<int-x: 0-2> <int-y: 0-2>): ");
 		Scanner scanner = new Scanner(System.in);
 		int x = scanner.nextInt();
@@ -160,7 +162,7 @@ public class Driver {
 		ticTacToe.set(y, x, c);
 	}
 
-	public static void makeRandomMove(char c) throws NoSuchMethodException,
+	public void makeRandomMove(char c) throws NoSuchMethodException,
 			IllegalAccessException, InvocationTargetException {
 		ArrayList<Action> actions;
 		actions = actionGenerator.generateMoves(c);
