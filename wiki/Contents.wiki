@@ -7,6 +7,7 @@
 || || [http://code.google.com/p/jaac/wiki/Asteroids Asteroids]       ||
 || Concepts || ||
 || || [http://code.google.com/p/jaac/wiki/CommandPattern Command Pattern] ||
+|| || [http://code.google.com/p/jaac/wiki/CrossCutting Cross-Cutting] ||
 || || [http://code.google.com/p/jaac/wiki/Cohesion Cohesion] ||
 || || [http://code.google.com/p/jaac/wiki/LooseCoupling Loose Coupling] ||
 || Technology|| ||
