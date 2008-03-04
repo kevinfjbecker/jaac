@@ -1,34 +1,44 @@
 package tictactoe.gui;
 
+import tictactoe.Driver;
+
 public class ComputerPlayer implements Runnable {
 
-	private int turn = 1;
+	private Driver driver;
 
-	public void reset() {
-		turn = 1;
+	public ComputerPlayer(Driver driver) {
+		this.driver = driver;
 	}
 
 	public void run() {
 		try {
 
-			switch (turn) {
+			switch (getTurnNumber()) {
+			case 0:
+				driver.makeRandomMove(driver.getCurrentPlayer());
+				break;
 			case 1:
-				TicTacToeGUI.driver.makeBestMove(TicTacToeGUI.isXsTurn ? 'x'
-						: 'o');
+				driver.makeBestMove(driver.getCurrentPlayer());
 				break;
 			default:
-				TicTacToeGUI.driver.makeMinMaxMove(TicTacToeGUI.isXsTurn ? 'x'
-						: 'o');
+				driver.makeMinMaxMove(driver.getCurrentPlayer());
 				break;
 			}
 
-			TicTacToeGUI.isPlayersTurn = !TicTacToeGUI.isPlayersTurn;
-			TicTacToeGUI.isXsTurn = !TicTacToeGUI.isXsTurn;
-			turn++;
+			driver.changePlayer();
 
 		} catch (Exception exception) {
 		}
 
 	}
 
+	private int getTurnNumber() {
+		int n = 0;
+		for (int x = 0; x < 3; x++)
+			for (int y = 0; y < 3; y++)
+				if (!driver.getTicTacToe().isOpen(y, x))
+					n++;
+		System.out.print(n);
+		return n;
+	}
 }

@@ -5,35 +5,48 @@ import java.awt.event.MouseListener;
 
 import javax.swing.SwingUtilities;
 
+import tictactoe.Driver;
+
 public class MouseInput implements MouseListener {
 
-	// TODO: bug -> the play is able to click on occupied loactions
-	// resulting in the computer making multiple moves
+	private BoardView boardView;
+
+	private ComputerPlayer computerPlayer;
+
+	private Driver driver;
+
+	public MouseInput(BoardView boardView, ComputerPlayer computerPlayer,
+			Driver driver) {
+		this.boardView = boardView;
+		this.computerPlayer = computerPlayer;
+		this.driver = driver;
+	}
+
 	public void mouseClicked(MouseEvent mouseEvent) {
-		if (TicTacToeGUI.driver.isGameOver()) {
+		if (driver.isGameOver()) {
 			return;
 		}
-		if (TicTacToeGUI.isPlayersTurn) {
+		if (driver.getCurrentPlayer() == TicTacToeGUI.humanPlayer()) {
 			int x = mouseEvent.getX();
 			int y = mouseEvent.getY();
 			x = x / (TicTacToeGUI.W / 3);
 			y = y / (TicTacToeGUI.H / 3);
-			if (TicTacToeGUI.driver.getTicTacToe().isOpen(y, x)) {
-				TicTacToeGUI.driver.getTicTacToe().set(y, x,
-						TicTacToeGUI.isXsTurn ? 'x' : 'o');
+			if (driver.getTicTacToe().isOpen(y, x)) {
+				driver.getTicTacToe().set(y, x, driver.getCurrentPlayer());
+				driver.changePlayer();
+				boardView.repaint();
+			} else {
+				return;
 			}
-			TicTacToeGUI.isPlayersTurn = !TicTacToeGUI.isPlayersTurn;
-			TicTacToeGUI.isXsTurn = !TicTacToeGUI.isXsTurn;
-			TicTacToeGUI.boardView.repaint();
 		}
-		if (TicTacToeGUI.driver.isGameOver()) {
+		if (driver.isGameOver()) {
 			return;
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TicTacToeGUI.computerPlayer.run();
-					TicTacToeGUI.boardView.repaint();
+					computerPlayer.run();
+					boardView.repaint();
 				} catch (Exception exception) {
 				}
 			}

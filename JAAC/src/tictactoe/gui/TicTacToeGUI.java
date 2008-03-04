@@ -6,19 +6,19 @@ import tictactoe.Driver;
 
 public class TicTacToeGUI {
 
-	public static BoardView boardView;
+	private static BoardView boardView;
 
-	public static ComputerPlayer computerPlayer;
+	private static ComputerPlayer computerPlayer;
+
+	private static Driver driver;
 
 	public static final int H;
 
-	public static boolean isPlayersTurn;
-
-	public static boolean isXsTurn;
+	private static char humanPlayer;
 
 	private static MenuInput menuInput;
 
-	public static Driver driver;
+	private static MouseInput mouseInput;
 
 	public static final int W;
 
@@ -27,14 +27,16 @@ public class TicTacToeGUI {
 		H = 256;
 		W = 256;
 
-		isPlayersTurn = true;
-		isXsTurn = true;
-
 		driver = new Driver();
-		
-		computerPlayer = new ComputerPlayer();
+
+		computerPlayer = new ComputerPlayer(driver);
 
 		boardView = new BoardView(driver.getTicTacToe(), W, H);
+
+		mouseInput = new MouseInput(boardView, computerPlayer, driver);
+
+		boardView.addMouseListener(mouseInput);
+
 		menuInput = new MenuInput();
 
 	}
@@ -52,6 +54,10 @@ public class TicTacToeGUI {
 		frame.pack();
 		frame.setVisible(true);
 
+	}
+
+	public static char humanPlayer() {
+		return humanPlayer;
 	}
 
 }
