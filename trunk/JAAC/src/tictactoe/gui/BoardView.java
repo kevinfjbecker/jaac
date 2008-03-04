@@ -47,7 +47,6 @@ public class BoardView extends JPanel {
 		_w = w;
 		_ticTacToe = ticTacToe;
 		setBackground(saturatedBlack);
-		addMouseListener(new MouseInput());
 	}
 
 	private void draw(Graphics g, int x, int y, char c) {

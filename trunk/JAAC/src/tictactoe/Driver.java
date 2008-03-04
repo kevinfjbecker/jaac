@@ -19,6 +19,8 @@ public class Driver {
 
 	private ActionHistory actionHistory = new ActionHistory();
 
+	private char currentPlayer = 'x';
+	
 	private ITicTacToe ticTacToe = (ITicTacToe) Proxy.newProxyInstance(
 			TicTacToe.class.getClassLoader(), new Class[] { ITicTacToe.class },
 			actionProxy);
@@ -40,35 +42,42 @@ public class Driver {
 
 		Driver d = new Driver();
 
-		char c = 'x';
 		for (int i = 1; !d.boardEvaluator.isGameOver() && i <= 1; i++) {
-			d.makeRandomMove(c);
+			d.makeRandomMove(d.getCurrentPlayer());
 			System.out.println(d.ticTacToe);
-			c = c == 'x' ? 'o' : 'x';
+			d.changePlayer();
 			if (d.boardEvaluator.isGameOver())
 				break;
-			d.makeHumanMove(c);
+			d.makeHumanMove(d.getCurrentPlayer());
 			System.out.println(d.ticTacToe);
-			c = c == 'x' ? 'o' : 'x';
+			d.changePlayer();
 		}
 		while (!d.boardEvaluator.isGameOver()) {
-			d.makeMinMaxMove(c);
+			d.makeMinMaxMove(d.getCurrentPlayer());
 			System.out.println(d.ticTacToe);
-			c = c == 'x' ? 'o' : 'x';
+			d.changePlayer();
 			if (d.boardEvaluator.isGameOver())
 				break;
-			d.makeHumanMove(c);
+			d.makeHumanMove(d.getCurrentPlayer());
 			System.out.println(d.ticTacToe);
-			c = c == 'x' ? 'o' : 'x';
+			d.changePlayer();
 		}
 	}
 
-	public static void clearBoard(ITicTacToe ticTacToe) {
+	public void changePlayer(){
+		currentPlayer = currentPlayer == 'x' ? 'o' : 'x';
+	}
+	
+	public void clearBoard(ITicTacToe ticTacToe) {
 		for (int y = 0; y < BOARD_LENGTH; y++)
 			for (int x = 0; x < BOARD_WIDTH; x++)
 				ticTacToe.clear(y, x);
 	}
 
+	public char getCurrentPlayer() {
+		return currentPlayer;
+	}
+	
 	public ITicTacToe getTicTacToe() {
 		return ticTacToe;
 	}
