@@ -1,6 +1,7 @@
 package tictactoe.gui;
 
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
 
 import tictactoe.Driver;
 
@@ -14,7 +15,9 @@ public class TicTacToeGUI {
 
 	public static final int H;
 
-	private static char humanPlayer;
+	private static char humanPlayer = 'x';
+
+	private static JMenuBar menuBar;
 
 	private static MenuInput menuInput;
 
@@ -37,8 +40,14 @@ public class TicTacToeGUI {
 
 		boardView.addMouseListener(mouseInput);
 
-		menuInput = new MenuInput();
+		menuInput = new MenuInput(boardView, computerPlayer, driver);
 
+		menuBar = TicTacToeMenu.getMenu(menuInput);
+
+	}
+
+	public static char getHumanPlayerMark() {
+		return humanPlayer;
 	}
 
 	public static void main(String[] args) {
@@ -47,7 +56,7 @@ public class TicTacToeGUI {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 
-		frame.setJMenuBar(TicTacToeMenu.getMenu(menuInput));
+		frame.setJMenuBar(menuBar);
 
 		frame.add(boardView);
 
@@ -56,8 +65,8 @@ public class TicTacToeGUI {
 
 	}
 
-	public static char humanPlayer() {
-		return humanPlayer;
+	public static void setHumanPlayerMark(char c) {
+		humanPlayer = c;
 	}
 
 }

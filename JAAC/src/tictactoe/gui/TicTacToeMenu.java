@@ -1,10 +1,10 @@
 package tictactoe.gui;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-
-import tictactoe.gui.MenuInput;
+import javax.swing.JRadioButtonMenuItem;
 
 public class TicTacToeMenu {
 
@@ -13,23 +13,33 @@ public class TicTacToeMenu {
 		JMenuBar menuBar = new JMenuBar();
 
 		JMenu fileMenu = new JMenu("File");
-		
+
 		JMenuItem exitMenuItem = new JMenuItem("Exit");
 		exitMenuItem.addActionListener(menuInput);
 		fileMenu.add(exitMenuItem);
 
 		JMenu gameMenu = new JMenu("Game");
-		
+
 		JMenuItem newGameMenuItem = new JMenuItem("New Game");
 		newGameMenuItem.addActionListener(menuInput);
 		gameMenu.add(newGameMenuItem);
-		
-		gameMenu.add("Play as 'X'");
-		gameMenu.add("Play as 'O'");
-		
+
+		ButtonGroup group = new ButtonGroup();
+
+		JMenuItem playAsXMenuItem = new JRadioButtonMenuItem("Play as 'X'");
+		playAsXMenuItem.addActionListener(menuInput);
+		playAsXMenuItem.setSelected(true);
+		gameMenu.add(playAsXMenuItem);
+		group.add(playAsXMenuItem);
+
+		JMenuItem playAsOMenuItem = new JRadioButtonMenuItem("Play as 'O'");
+		playAsOMenuItem.addActionListener(menuInput);
+		gameMenu.add(playAsOMenuItem);
+		group.add(playAsOMenuItem);
+
 		JMenu viewMenu = new JMenu("View");
 		viewMenu.add("Watch MinMax");
-		
+
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.add("About");
 
@@ -40,5 +50,5 @@ public class TicTacToeMenu {
 
 		return menuBar;
 	}
-	
+
 }
