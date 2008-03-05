@@ -1,5 +1,7 @@
 #summary About Tic-Tac-Toe.
 
+[http://domain/page Try is now.]
+
 = What it does =
 
 Tic-Tac-Toe uses undoable commands to implement min-max.
