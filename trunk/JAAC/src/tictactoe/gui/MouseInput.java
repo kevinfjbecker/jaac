@@ -26,7 +26,7 @@ public class MouseInput implements MouseListener {
 		if (driver.isGameOver()) {
 			return;
 		}
-		if (driver.getCurrentPlayer() == TicTacToeGUI.humanPlayer()) {
+		if (driver.getCurrentPlayer() == TicTacToeGUI.getHumanPlayerMark()) {
 			int x = mouseEvent.getX();
 			int y = mouseEvent.getY();
 			x = x / (TicTacToeGUI.W / 3);

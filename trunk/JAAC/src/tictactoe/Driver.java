@@ -178,4 +178,8 @@ public class Driver {
 		actions.get((int) (Math.random() * actions.size())).execute();
 	}
 
+	public void setCurrentPlayer(char c) {
+		currentPlayer = c;
+	}
+
 }

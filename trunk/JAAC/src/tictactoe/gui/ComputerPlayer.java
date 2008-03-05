@@ -38,7 +38,6 @@ public class ComputerPlayer implements Runnable {
 			for (int y = 0; y < 3; y++)
 				if (!driver.getTicTacToe().isOpen(y, x))
 					n++;
-		System.out.print(n);
 		return n;
 	}
 }
