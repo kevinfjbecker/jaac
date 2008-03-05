@@ -1,5 +1,7 @@
 #summary About the Sudoku Solver.
 
+[http://jaac.googlecode.com/files/SudokuSolver.jar Try it now.]
+
 = What it does =
 
 The Sudoku Solver uses undoable commands to implement depth first search.
