@@ -1,6 +1,6 @@
 #summary About Tic-Tac-Toe.
 
-[http://domain/page Try is now.]
+[http://jaac.googlecode.com/files/TicTacToe.jar Try it now.]
 
 = What it does =
 
