@@ -1,0 +1,3 @@
+#summary An Explanation of the mechanics behind JAAC.
+
+JAAC's functionality comes from mixing to Design Patterns: the Command and the Proxy.
