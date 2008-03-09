@@ -37,15 +37,11 @@ public class TicTacToeMenu {
 		gameMenu.add(playAsOMenuItem);
 		group.add(playAsOMenuItem);
 
-		JMenu viewMenu = new JMenu("View");
-		viewMenu.add("Watch MinMax");
-
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.add("About");
 
 		menuBar.add(fileMenu);
 		menuBar.add(gameMenu);
-		menuBar.add(viewMenu);
 		menuBar.add(helpMenu);
 
 		return menuBar;
