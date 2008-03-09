@@ -29,10 +29,6 @@ public class SudokuMenu {
 		exitMenuItem.addActionListener(menuInput);
 		fileMenu.add(exitMenuItem);
 
-		JMenu editMenu = new JMenu("Edit");
-		editMenu.add("Undo");
-		editMenu.add("Redo");
-
 		JMenu puzzleMenu = new JMenu("Puzzle");
 
 		JMenuItem setAsStartMenuItem = new JMenuItem("Set as Start");
@@ -58,7 +54,6 @@ public class SudokuMenu {
 		helpMenu.add("About");
 
 		menuBar.add(fileMenu);
-		menuBar.add(editMenu);
 		menuBar.add(viewMenu);
 		menuBar.add(puzzleMenu);
 		menuBar.add(helpMenu);
