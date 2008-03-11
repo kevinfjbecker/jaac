@@ -1,1 +1,3 @@
 #summary About the Proxy Design Pattern.
+
+http://jaac.googlecode.com/files/ShowingProxy.jpg
