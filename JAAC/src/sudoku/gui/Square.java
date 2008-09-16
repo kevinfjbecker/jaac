@@ -44,7 +44,7 @@ public class Square extends JPanel implements MouseListener {
 
 			g2d.setColor(BLACK);
 			FontRenderContext frc = g2d.getFontRenderContext();
-			Font f = new Font(Font.SERIF, Font.PLAIN, 24);
+			Font f = new Font("SERIF", Font.PLAIN, 24);
 			String s = new String("" + (i + 1));
 			TextLayout textLayout = new TextLayout(s, f, frc);
 			textLayout.draw(g2d, 6, 20);
@@ -72,7 +72,7 @@ public class Square extends JPanel implements MouseListener {
 
 			g2d.setColor(BLACK);
 			FontRenderContext frc = g2d.getFontRenderContext();
-			Font f = new Font(Font.SERIF, Font.PLAIN, 6);
+			Font f = new Font("SERIF", Font.PLAIN, 6);
 			String s = new String("" + (i + 1));
 			TextLayout textLayout = new TextLayout(s, f, frc);
 			textLayout.draw(g2d, 2, 6);
