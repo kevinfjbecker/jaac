@@ -1,6 +1,7 @@
 #summary About the Sudoku Solver.
 
 [http://jaac.googlecode.com/files/SudokuSolver.jar Try it now.]
+note: requires jvm 1.6+
 
 = What it does =
 
