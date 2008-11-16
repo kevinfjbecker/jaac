@@ -2,6 +2,8 @@
 
 [http://jaac.googlecode.com/files/TicTacToe.jar Try it now.]
 
+(note: requires jvm 1.6)
+
 = What it does =
 
 Tic-Tac-Toe uses undoable commands to implement min-max.
