@@ -1,8 +1,8 @@
 #summary About Tic-Tac-Toe.
 
-[http://jaac.googlecode.com/files/TicTacToe.jar Try it now.]
+[http://jaac.googlecode.com/files/TicTacToe-jse5-v0.5.jar Try it now.]
 
-(note: requires jvm 1.6)
+(note: requires jvm 1.5+)
 
 = What it does =
 
