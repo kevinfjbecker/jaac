@@ -1,0 +1,5 @@
+The proposed solution is to create a proxy class (as provided by Java's reflection package) together with an annotated interface which indicates the appropriate "undo" for each method. This allows a class' code to remain direct and uncluttered; the actions are generated at runtime and stored or undone by external handlers.
+
+The problem is how to both use the command design pattern and retain the cohesion of directly implemented code. The command pattern promotes a method call to an object, improving program flexibility. The cost is source cohesion; either command code is injected into class, or the class' behavior is extracted into command subclasses.
+
+Two sample applications are implemented using the suggested solution: a min-max tic-tac-toe player and a backtracking sudoku solver, which extends the action class to provide transactions.
